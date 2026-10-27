@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Cash Tally</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+
+        <header class="page-header">
+            <div>
+                <h1>Daily Cash Tally</h1>
+                <p>End-of-day cash reconciliation</p>
+            </div>
+            <span class="header-badge">DAILY REPORT</span>
+        </header>
+
+        <!-- 1. Day Details -->
+        <section class="panel">
+            <h2>1. Day Details</h2>
+
+            <div class="form-grid">
+                <div class="field">
+                    <label for="businessDate">Business Date</label>
+                    <input type="date" id="businessDate">
+                </div>
+
+                <div class="field">
+                    <label for="openingCash">Opening Drawer Cash (Rs.)</label>
+                    <input type="number" id="openingCash"
+                           min="0" step="0.01" placeholder="e.g. 8850">
+                </div>
+
+                <div class="field">
+                    <label for="totalBilling">Total Billing (Rs.)</label>
+                    <input type="number" id="totalBilling"
+                           min="0" step="0.01" placeholder="e.g. 114500">
+                </div>
+
+                <div class="field">
+                    <label for="jazzCash">Total JazzCash Received (Rs.)</label>
+                    <input type="number" id="jazzCash"
+                           min="0" step="0.01" placeholder="e.g. 5000">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Expenses -->
+        <section class="panel">
+            <div class="section-heading">
+                <h2>2. Extra Expenses</h2>
+                <button type="button" class="btn btn-secondary"
+                        id="addExpenseBtn">+ Add Expense</button>
+            </div>
+
+            <p class="muted">
+                Enter each expense separately. The total updates automatically.
+            </p>
+
+            <div id="expenseList"></div>
+
+            <div class="expense-total">
+                <span>Total Expenses</span>
+                <strong id="totalExpenses">Rs. 0</strong>
+            </div>
+        </section>
+
+        <!-- 3. Closing Cash -->
+        <section class="panel">
+            <h2>3. Count Closing Cash</h2>
+
+            <p class="muted">
+                Count Rs. 5,000, Rs. 1,000 and Rs. 500 notes manually.
+                Enter their combined value in the manual cash field below.
+            </p>
+
+            <div class="cash-grid">
+
+                <div class="cash-item">
+                    <label for="notes100">Rs. 100 Notes</label>
+                    <div class="cash-input-row">
+                        <input type="number" id="notes100"
+                               class="denomination" data-value="100"
+                               min="0" step="1" value="0">
+                        <span id="total100">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div class="cash-item">
+                    <label for="notes50">Rs. 50 Notes</label>
+                    <div class="cash-input-row">
+                        <input type="number" id="notes50"
+                               class="denomination" data-value="50"
+                               min="0" step="1" value="0">
+                        <span id="total50">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div class="cash-item">
+                    <label for="notes20">Rs. 20 Notes</label>
+                    <div class="cash-input-row">
+                        <input type="number" id="notes20"
+                               class="denomination" data-value="20"
+                               min="0" step="1" value="0">
+                        <span id="total20">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div class="cash-item">
+                    <label for="notes10">Rs. 10 Notes</label>
+                    <div class="cash-input-row">
+                        <input type="number" id="notes10"
+                               class="denomination" data-value="10"
+                               min="0" step="1" value="0">
+                        <span id="total10">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div class="cash-item">
+                    <label for="otherCash">
+                        Manually Counted Notes + Coins (Rs.)
+                    </label>
+                    <input type="number" id="otherCash"
+                           min="0" step="0.01" value="0"
+                           placeholder="e.g. 15000">
+                    <p class="muted">
+                        Include Rs. 5,000, Rs. 1,000 and Rs. 500 notes,
+                        plus any coins or other cash.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="closing-total">
+                <span>Total Physical Closing Cash</span>
+                <strong id="actualCash">Rs. 0</strong>
+            </div>
+        </section>
+
+        <!-- 4. Results -->
+        <section class="panel">
+            <h2>4. Cash Tally Results</h2>
+
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <span>Cash Sales</span>
+                    <strong id="cashSales">Rs. 0</strong>
+                    <small>Billing minus JazzCash</small>
+                </div>
+
+                <div class="result-card">
+                    <span>Expected Closing Cash</span>
+                    <strong id="expectedCash">Rs. 0</strong>
+                    <small>Opening + billing − JazzCash − expenses</small>
+                </div>
+
+                <div class="result-card">
+                    <span>Actual Closing Cash</span>
+                    <strong id="actualCashResult">Rs. 0</strong>
+                    <small>Counted physical cash</small>
+                </div>
+
+                <div class="result-card highlight">
+                    <span>Cash Difference</span>
+                    <strong id="cashDifference">Rs. 0</strong>
+                    <small id="differenceStatus">Enter your figures</small>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="button" class="btn btn-primary"
+                        id="calculateBtn">Calculate Tally</button>
+
+                <button type="button" class="btn btn-secondary"
+                        id="copyBtn">Copy Report</button>
+
+                <button type="button" class="btn btn-secondary"
+                        id="printBtn">Print / Save PDF</button>
+
+                <button type="button" class="btn btn-danger"
+                        id="resetBtn">Clear Form</button>
+            </div>
+        </section>
+
+        <!-- 5. Detailed Report -->
+        <section class="panel report-panel">
+            <h2>5. Detailed Calculation</h2>
+
+            <pre id="calculationDetails">Enter your daily figures to calculate the tally.</pre>
+
+            <h3>End-of-Day Report</h3>
+
+            <pre id="dailyReport">Your daily report will appear here.</pre>
+        </section>
+
+        <footer>
+            Daily Cash Tally · Check your figures before closing the day.
+        </footer>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
